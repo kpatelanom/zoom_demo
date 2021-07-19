@@ -42,10 +42,9 @@ navigator.mediaDevices
   });
 
 socket.on('user-disconnected', (userId) => {
-  if (peers[userId]) {
-    peers[userId].close();
-  }
+  videoGrid.innerHTML = '';
 });
+
 function connectToNewUser(userId, stream) {
   console.log('usrid', userId);
   const call = peer.call(userId, stream);

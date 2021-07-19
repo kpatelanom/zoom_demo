@@ -20,11 +20,16 @@ io.on('connection', (socket) => {
     console.log(roomId, userId);
     socket.join(roomId);
     io.to(roomId).emit('user-connected', userId);
-  });
 
-  socket.on('disconnected', () => {
-    console.log('user disconnected');
-    io.to(roomId).emit('user-disconnected', userId);
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+      io.to(roomId).emit('user-disconnected', userId);
+    });
   });
 });
+
 server.listen(5000);
+
+process.on('warning', (e) => {
+  console.log(e.stack);
+});
