@@ -21,5 +21,10 @@ io.on('connection', (socket) => {
     socket.join(roomId);
     io.to(roomId).emit('user-connected', userId);
   });
+
+  socket.on('disconnected', () => {
+    console.log('user disconnected');
+    io.to(roomId).emit('user-disconnected', userId);
+  });
 });
 server.listen(5000);

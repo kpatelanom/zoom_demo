@@ -15,6 +15,8 @@ peer.on('open', (id) => {
   socket.emit('join-room', ROOM_ID, id);
 });
 
+const peers = {};
+
 navigator.mediaDevices
   .getUserMedia({
     video: true,
@@ -39,6 +41,11 @@ navigator.mediaDevices
     });
   });
 
+socket.on('user-disconnected', (userId) => {
+  if (peers[userId]) {
+    peers[userId].close();
+  }
+});
 function connectToNewUser(userId, stream) {
   console.log('usrid', userId);
   const call = peer.call(userId, stream);
@@ -49,6 +56,8 @@ function connectToNewUser(userId, stream) {
   call.on('close', () => {
     video.remove();
   });
+
+  peers[userId] = call;
 }
 
 function addVideoStream(video, stream) {
